@@ -1,7 +1,14 @@
+import 'package:applicationproduction/search_bar.dart';
 import 'package:flutter/material.dart';
+//import 'package:original_widget_sample/contents_widget.dart';
 
 void main() => runApp(MyApp());
 
+/*
+void main() {
+  runApp(const MyApp());
+}
+*/
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -15,10 +22,11 @@ class MyApp extends StatelessWidget {
           centerTitle: true,
           title: Text('カラオケ点数記録アプリ'),
         ),
+        /*
         body: Center(
           child: Text('一覧'),
         ),
-
+        */
         /*
         floatingActionButton: FloatingActionButton(
           onPressed: () {},
@@ -28,6 +36,24 @@ class MyApp extends StatelessWidget {
         //次のテキストを入れる場所
       ),
       //次のテキストを入れる場所
+    );
+  }
+}
+
+class MyWidget extends StatelessWidget {
+  const MyWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SafeArea(
+        child: SingleChildScrollView(
+            child: Column(
+          children: const [
+            SearchBarWidget(),
+          ],
+        )),
+      ),
     );
   }
 }
