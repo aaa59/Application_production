@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'アプリ名',
+      title: 'アプリ名を入れる',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
@@ -33,9 +33,7 @@ class MyApp extends StatelessWidget {
           child: Icon(Icons.add),
         ),
         */
-        //次のテキストを入れる場所
       ),
-      //次のテキストを入れる場所
     );
   }
 }
@@ -47,12 +45,9 @@ class MyWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: SingleChildScrollView(
-            child: Column(
-          children: const [
-            SearchBarWidget(),
-          ],
-        )),
+        child: Column(
+          SearchBarWidget(),
+        ),
       ),
     );
   }
