@@ -45,7 +45,7 @@ class MyWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
-        SearchBarWidget(),
+        children: const [SearchBarWidget()],
       ),
     );
   }
