@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'NewRegistrationPage.dart';
 //import 'FirstPage.dart';
 
 class HomePage extends StatelessWidget {
