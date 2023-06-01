@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'HomePage.dart';
-import 'NewRegistrationPage.dart';
+//import 'NewRegistrationPage.dart';
 //import 'package:original_widget_sample/contents_widget.dart';
 
 //void main() => runApp(MyApp());
