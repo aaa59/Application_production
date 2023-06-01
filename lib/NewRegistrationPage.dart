@@ -1,3 +1,4 @@
+import 'package:applicationproduction/HomePage.dart';
 import 'package:flutter/material.dart';
 
 class NewRegistrationPage extends StatelessWidget {
@@ -41,6 +42,11 @@ class NewRegistrationPage extends StatelessWidget {
                     ),
                     onPressed: () {
                       // キャンセルボタンが押された時の処理
+                      //ロジック
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => HomePage()),
+                      );
                     },
                     child: Text(
                       'キャンセル',
@@ -53,6 +59,11 @@ class NewRegistrationPage extends StatelessWidget {
                   child: ElevatedButton(
                     onPressed: () {
                       // 登録ボタンが押された時の処理
+                      //ロジックも
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => HomePage()),
+                      );
                     },
                     child: Text('登録'),
                   ),

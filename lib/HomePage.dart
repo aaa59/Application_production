@@ -50,6 +50,11 @@ class HomePage extends StatelessWidget {
                   onPressed: () {
                     // 新規登録ボタンが押された時の処理
                     // ここに新規登録のロジックを書く
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => NewRegistrationPage()),
+                    );
                   },
                   child: Text('新規登録'),
                 ),
