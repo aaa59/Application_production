@@ -1,8 +1,25 @@
 import 'package:flutter/material.dart';
 import 'NewRegistrationPage.dart';
+//import 'package:sqflite/sqflite.dart';
+//import 'package:path/path.dart';
 //import 'FirstPage.dart';
 
 class HomePage extends StatelessWidget {
+  /*
+  Future<void> _openDatabase() async {
+    final database = await openDatabase(
+      join(await getDatabasesPath(), 'note_database.db'),
+      onCreate: (db, version) {
+        return db.execute(
+          "CREATE TABLE note(id INTEGER PRIMARY KEY AUTOINCREMENT,songTitle TEXT,artistName TEXT,score INTEGER)",
+        );
+      },
+      version: 1,
+    );
+    // データベースの操作などを行う...
+  }
+  */
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -64,6 +81,7 @@ class HomePage extends StatelessWidget {
         ),
       ),
     );
+
     /*
   @override
   Widget build(BuildContext context) {
