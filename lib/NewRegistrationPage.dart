@@ -1,5 +1,6 @@
+import 'HomePage.dart';
 import 'package:flutter/material.dart';
-import 'DatabaseHelper.dart';
+import 'package:applicationproduction/DatabaseHelper.dart';
 
 class NewRegistrationPage extends StatelessWidget {
   final TextEditingController _songTitleController = TextEditingController();
@@ -48,7 +49,7 @@ class NewRegistrationPage extends StatelessWidget {
                       primary: Colors.white,
                     ),
                     onPressed: () {
-                      Navigator.pop(context, false); // falseを渡す
+                      Navigator.pop(context, false);
                     },
                     child: Text(
                       'キャンセル',
@@ -62,14 +63,14 @@ class NewRegistrationPage extends StatelessWidget {
                     onPressed: () {
                       final songTitle = _songTitleController.text;
                       final artistName = _artistNameController.text;
-                      final score = int.tryParse(_scoreController.text);
+                      final score = double.tryParse(_scoreController.text);
 
                       if (songTitle.isNotEmpty &&
                           artistName.isNotEmpty &&
                           score != null) {
                         DatabaseHelper.insertNote(songTitle, artistName, score);
 
-                        Navigator.pop(context, true); // trueを渡す
+                        Navigator.pop(context, true);
                       }
                     },
                     child: Text('登録'),

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'NewRegistrationPage.dart';
-import 'EditNotePage.dart';
 import 'DatabaseHelper.dart';
+import 'NewRegistrationPage.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -10,6 +9,9 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   List<Map<String, dynamic>> _notes = [];
+  List<Map<String, dynamic>> _searchResults = [];
+
+  TextEditingController _searchController = TextEditingController();
 
   @override
   void initState() {
@@ -20,24 +22,27 @@ class _HomePageState extends State<HomePage> {
   Future<void> _loadNotes() async {
     final notes = await DatabaseHelper.getNotes();
     setState(() {
-      _notes = notes;
+      _notes = List.from(notes.reversed);
     });
   }
 
-  Future<void> _deleteNote(int id) async {
-    await DatabaseHelper.deleteNote(id);
-    _loadNotes();
-  }
+  Future<void> _searchNotes(String searchText) async {
+    final notes = await DatabaseHelper.getNotes();
+    final List<Map<String, dynamic>> results = [];
 
-  Future<void> _editNote(int id) async {
-    final editedNote = await Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => EditNotePage(id: id)),
-    );
+    for (var note in notes) {
+      final songTitle = note['songTitle'].toString().toLowerCase();
+      final artistName = note['artistName'].toString().toLowerCase();
 
-    if (editedNote != null && editedNote) {
-      _loadNotes();
+      if (songTitle.contains(searchText.toLowerCase()) ||
+          artistName.contains(searchText.toLowerCase())) {
+        results.add(note);
+      }
     }
+
+    setState(() {
+      _searchResults = results;
+    });
   }
 
   @override
@@ -55,6 +60,10 @@ class _HomePageState extends State<HomePage> {
                 child: Padding(
                   padding: EdgeInsets.all(10.0),
                   child: TextField(
+                    controller: _searchController,
+                    onChanged: (value) {
+                      _searchNotes(value);
+                    },
                     decoration: InputDecoration(
                       hintText: '曲名 か アーティスト名を入力',
                     ),
@@ -63,8 +72,8 @@ class _HomePageState extends State<HomePage> {
               ),
               ElevatedButton.icon(
                 onPressed: () {
-                  // 検索ボタンが押された時の処理
-                  // ここに検索のロジックを書く
+                  final searchText = _searchController.text;
+                  _searchNotes(searchText);
                 },
                 icon: Icon(Icons.search),
                 label: Text('検索'),
@@ -86,8 +95,7 @@ class _HomePageState extends State<HomePage> {
                 onPressed: () async {
                   final result = await Navigator.push(
                     context,
-                    MaterialPageRoute(
-                        builder: (context) => NewRegistrationPage()),
+                    MaterialPageRoute(builder: (context) => NewRegistrationPage()),
                   );
 
                   if (result != null && result) {
@@ -108,40 +116,43 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildNoteList() {
-    if (_notes.isEmpty) {
+    final resultList = _searchResults.isNotEmpty ? _searchResults : _notes;
+
+    if (resultList.isEmpty) {
       return Center(
         child: Text('データがありません'),
       );
-    } else {
-      return ListView.builder(
-        itemCount: _notes.length,
-        itemBuilder: (context, index) {
-          final note = _notes[index];
-          return Dismissible(
-            key: Key(note['id'].toString()),
-            onDismissed: (direction) {
-              _deleteNote(note['id']);
-            },
-            background: Container(
-              color: Colors.red,
-              alignment: Alignment.centerRight,
-              padding: EdgeInsets.symmetric(horizontal: 16.0),
-              child: Icon(
-                Icons.delete,
-                color: Colors.white,
-              ),
-            ),
-            child: ListTile(
-              title: Text(note['songTitle']),
-              subtitle: Text(note['artistName']),
-              trailing: Text(note['score'].toString()),
-              onTap: () {
-                _editNote(note['id']);
-              },
-            ),
-          );
-        },
-      );
     }
+
+    return ListView.builder(
+      itemCount: resultList.length,
+      itemBuilder: (context, index) {
+        final note = resultList[index];
+        return Dismissible(
+          key: Key(note['id'].toString()),
+          direction: DismissDirection.endToStart,
+          onDismissed: (direction) async {
+            await DatabaseHelper.deleteNote(note['id']);
+            setState(() {
+              resultList.removeAt(index);
+            });
+          },
+          background: Container(
+            color: Colors.red,
+            alignment: Alignment.centerRight,
+            padding: EdgeInsets.symmetric(horizontal: 16.0),
+            child: Icon(
+              Icons.delete,
+              color: Colors.white,
+            ),
+          ),
+          child: ListTile(
+            title: Text(note['songTitle']),
+            subtitle: Text(note['artistName']),
+            trailing: Text(note['score'].toStringAsFixed(3)),
+          ),
+        );
+      },
+    );
   }
 }
