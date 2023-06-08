@@ -12,7 +12,7 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  //const MyApp({super.key});
 
   Future<void> _openDatabase() async {
     final database = await openDatabase(
@@ -40,35 +40,29 @@ class MyApp extends StatelessWidget {
   }
 }
 
-/*
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'アプリ名を入れる',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          title: Text('カラオケ点数記録アプリ'),
-        ),
-      ),
+class DatabaseHelper {
+  static Future<Database> database() async {
+    final databasePath = await getDatabasesPath();
+    final path = join(databasePath, 'note_database.db');
+
+    return openDatabase(path, version: 1, onCreate: (db, version) {
+      db.execute(
+        "CREATE TABLE note(id INTEGER PRIMARY KEY AUTOINCREMENT,songTitle TEXT,artistName TEXT,score INTEGER)",
+      );
+    });
+  }
+
+  static Future<void> insertNote(
+      String songTitle, String artistName, int score) async {
+    final db = await database();
+    await db.insert(
+      'note',
+      {
+        'songTitle': songTitle,
+        'artistName': artistName,
+        'score': score,
+      },
+      conflictAlgorithm: ConflictAlgorithm.replace,
     );
   }
 }
-
-class MyWidget extends StatelessWidget {
-  const MyWidget({required Key key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        children: const [SearchBarWidget()],
-      ),
-    );
-  }
-}
-*/
