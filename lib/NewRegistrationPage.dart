@@ -46,18 +46,14 @@ class NewRegistrationPage extends StatelessWidget {
                 Expanded(
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      primary: Colors.white, // 背景色を白に設定
+                      primary: Colors.white,
                     ),
                     onPressed: () {
-                      // キャンセルボタンが押された時の処理
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => HomePage()),
-                      );
+                      Navigator.pop(context, false); // falseを渡す
                     },
                     child: Text(
                       'キャンセル',
-                      style: TextStyle(color: Colors.black), // テキストの色を黒に設定
+                      style: TextStyle(color: Colors.black),
                     ),
                   ),
                 ),
@@ -65,7 +61,6 @@ class NewRegistrationPage extends StatelessWidget {
                 Expanded(
                   child: ElevatedButton(
                     onPressed: () {
-                      // 登録ボタンが押された時の処理
                       final songTitle = _songTitleController.text;
                       final artistName = _artistNameController.text;
                       final score = int.tryParse(_scoreController.text);
@@ -74,9 +69,9 @@ class NewRegistrationPage extends StatelessWidget {
                           artistName.isNotEmpty &&
                           score != null) {
                         DatabaseHelper.insertNote(songTitle, artistName, score);
-                      }
 
-                      Navigator.pop(context);
+                        Navigator.pop(context, true); // trueを渡す
+                      }
                     },
                     child: Text('登録'),
                   ),
