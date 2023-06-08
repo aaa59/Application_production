@@ -1,16 +1,38 @@
 import 'package:flutter/material.dart';
-import 'DatabaseHelper.dart';
+import 'package:applicationproduction/DatabaseHelper.dart';
 
-class NewRegistrationPage extends StatelessWidget {
+class EditNotePage extends StatefulWidget {
+  final int id;
+
+  const EditNotePage({required this.id});
+
+  @override
+  _EditNotePageState createState() => _EditNotePageState();
+}
+
+class _EditNotePageState extends State<EditNotePage> {
   final TextEditingController _songTitleController = TextEditingController();
   final TextEditingController _artistNameController = TextEditingController();
   final TextEditingController _scoreController = TextEditingController();
 
   @override
+  void initState() {
+    super.initState();
+    _loadNote();
+  }
+
+  Future<void> _loadNote() async {
+    final note = await DatabaseHelper.getNoteById(widget.id);
+    _songTitleController.text = note['songTitle'];
+    _artistNameController.text = note['artistName'];
+    _scoreController.text = note['score'].toString();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('新規登録'),
+        title: Text('データ編集'),
       ),
       body: Padding(
         padding: EdgeInsets.all(16.0),
@@ -67,12 +89,13 @@ class NewRegistrationPage extends StatelessWidget {
                       if (songTitle.isNotEmpty &&
                           artistName.isNotEmpty &&
                           score != null) {
-                        DatabaseHelper.insertNote(songTitle, artistName, score);
+                        DatabaseHelper.updateNote(
+                            widget.id, songTitle, artistName, score);
 
                         Navigator.pop(context, true); // trueを渡す
                       }
                     },
-                    child: Text('登録'),
+                    child: Text('保存'),
                   ),
                 ),
               ],

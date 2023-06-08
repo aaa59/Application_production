@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'NewRegistrationPage.dart';
+import 'EditNotePage.dart';
 import 'DatabaseHelper.dart';
 
 class HomePage extends StatefulWidget {
@@ -21,6 +22,22 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       _notes = notes;
     });
+  }
+
+  Future<void> _deleteNote(int id) async {
+    await DatabaseHelper.deleteNote(id);
+    _loadNotes();
+  }
+
+  Future<void> _editNote(int id) async {
+    final editedNote = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => EditNotePage(id: id)),
+    );
+
+    if (editedNote != null && editedNote) {
+      _loadNotes();
+    }
   }
 
   @override
@@ -100,10 +117,28 @@ class _HomePageState extends State<HomePage> {
         itemCount: _notes.length,
         itemBuilder: (context, index) {
           final note = _notes[index];
-          return ListTile(
-            title: Text(note['songTitle']),
-            subtitle: Text(note['artistName']),
-            trailing: Text(note['score'].toString()),
+          return Dismissible(
+            key: Key(note['id'].toString()),
+            onDismissed: (direction) {
+              _deleteNote(note['id']);
+            },
+            background: Container(
+              color: Colors.red,
+              alignment: Alignment.centerRight,
+              padding: EdgeInsets.symmetric(horizontal: 16.0),
+              child: Icon(
+                Icons.delete,
+                color: Colors.white,
+              ),
+            ),
+            child: ListTile(
+              title: Text(note['songTitle']),
+              subtitle: Text(note['artistName']),
+              trailing: Text(note['score'].toString()),
+              onTap: () {
+                _editNote(note['id']);
+              },
+            ),
           );
         },
       );
