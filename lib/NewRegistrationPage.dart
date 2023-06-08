@@ -1,7 +1,12 @@
 import 'package:applicationproduction/HomePage.dart';
 import 'package:flutter/material.dart';
+import 'package:applicationproduction/DatabaseHelper.dart';
 
 class NewRegistrationPage extends StatelessWidget {
+  final TextEditingController _songTitleController = TextEditingController();
+  final TextEditingController _artistNameController = TextEditingController();
+  final TextEditingController _scoreController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -15,18 +20,21 @@ class NewRegistrationPage extends StatelessWidget {
           children: [
             SizedBox(height: 16.0),
             TextFormField(
+              controller: _songTitleController,
               decoration: InputDecoration(
                 labelText: '曲名',
               ),
             ),
             SizedBox(height: 16.0),
             TextFormField(
+              controller: _artistNameController,
               decoration: InputDecoration(
                 labelText: 'アーティスト名',
               ),
             ),
             SizedBox(height: 16.0),
             TextFormField(
+              controller: _scoreController,
               decoration: InputDecoration(
                 labelText: '点数',
               ),
@@ -42,7 +50,6 @@ class NewRegistrationPage extends StatelessWidget {
                     ),
                     onPressed: () {
                       // キャンセルボタンが押された時の処理
-                      //ロジック
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => HomePage()),
@@ -59,11 +66,17 @@ class NewRegistrationPage extends StatelessWidget {
                   child: ElevatedButton(
                     onPressed: () {
                       // 登録ボタンが押された時の処理
-                      //ロジックも
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => HomePage()),
-                      );
+                      final songTitle = _songTitleController.text;
+                      final artistName = _artistNameController.text;
+                      final score = int.tryParse(_scoreController.text);
+
+                      if (songTitle.isNotEmpty &&
+                          artistName.isNotEmpty &&
+                          score != null) {
+                        DatabaseHelper.insertNote(songTitle, artistName, score);
+                      }
+
+                      Navigator.pop(context);
                     },
                     child: Text('登録'),
                   ),
