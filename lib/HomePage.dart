@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'DatabaseHelper.dart';
 import 'NewRegistrationPage.dart';
+import 'EditNotePage.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -148,8 +149,28 @@ class _HomePageState extends State<HomePage> {
           ),
           child: ListTile(
             title: Text(note['songTitle']),
-            subtitle: Text(note['artistName']),
+            subtitle: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(note['artistName']),
+                SizedBox(height: 4.0),
+                Text(
+                  '日付: ${DateTime.parse(note['date']).year}/${DateTime.parse(note['date']).month}/${DateTime.parse(note['date']).day}',
+                  style: TextStyle(fontSize: 12.0),
+                ),
+              ],
+            ),
             trailing: Text(note['score'].toStringAsFixed(3)),
+            onTap: () async {
+              final result = await Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => EditNotePage(note: note)),
+              );
+
+              if (result != null && result) {
+                _loadNotes();
+              }
+            },
           ),
         );
       },
