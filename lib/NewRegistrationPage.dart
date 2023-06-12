@@ -11,6 +11,15 @@ class _NewRegistrationPageState extends State<NewRegistrationPage> {
   final TextEditingController _songTitleController = TextEditingController();
   final TextEditingController _artistNameController = TextEditingController();
   final TextEditingController _scoreController = TextEditingController();
+  DateTime _selectedDate = DateTime.now();
+
+  @override
+  void dispose() {
+    _songTitleController.dispose();
+    _artistNameController.dispose();
+    _scoreController.dispose();
+    super.dispose();
+  }
 
   @override
   void dispose() {
@@ -61,6 +70,7 @@ class _NewRegistrationPageState extends State<NewRegistrationPage> {
                 final score = double.tryParse(_scoreController.text);
                 final date = DateTime.now().toString();
 
+<<<<<<< HEAD
                 if (songTitle.isNotEmpty &&
                     artistName.isNotEmpty &&
                     score != null) {
@@ -74,6 +84,26 @@ class _NewRegistrationPageState extends State<NewRegistrationPage> {
                 }
               },
               child: Text('登録'),
+=======
+                      if (songTitle.isNotEmpty &&
+                          artistName.isNotEmpty &&
+                          score != null) {
+                        final date = DateTime.now().toString();
+
+                        DatabaseHelper.insertNote(
+                          songTitle,
+                          artistName,
+                          score,
+                          date,
+                        );
+                        Navigator.pop(context, true);
+                      }
+                    },
+                    child: Text('登録'),
+                  ),
+                ),
+              ],
+>>>>>>> 4891047ebfcb3681d0448a16ac1d893e507e1ec9
             ),
           ],
         ),

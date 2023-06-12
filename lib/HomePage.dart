@@ -155,12 +155,17 @@ class _HomePageState extends State<HomePage> {
                 Text(note['artistName']),
                 SizedBox(height: 4.0),
                 Text(
+<<<<<<< HEAD
                   '日付: ${DateTime.parse(note['date']).year}/${DateTime.parse(note['date']).month}/${DateTime.parse(note['date']).day}',
+=======
+                  '日付: ${note['date']}',
+>>>>>>> 4891047ebfcb3681d0448a16ac1d893e507e1ec9
                   style: TextStyle(fontSize: 12.0),
                 ),
               ],
             ),
             trailing: Text(note['score'].toStringAsFixed(3)),
+<<<<<<< HEAD
             onTap: () async {
               final result = await Navigator.push(
                 context,
@@ -170,6 +175,10 @@ class _HomePageState extends State<HomePage> {
               if (result != null && result) {
                 _loadNotes();
               }
+=======
+            onTap: () {
+              // リストアイテムがタップされた時の処理を追加する
+>>>>>>> 4891047ebfcb3681d0448a16ac1d893e507e1ec9
             },
           ),
         );
