@@ -15,8 +15,11 @@ class _EditNotePageState extends State<EditNotePage> {
   final TextEditingController _songTitleController = TextEditingController();
   final TextEditingController _artistNameController = TextEditingController();
   final TextEditingController _scoreController = TextEditingController();
+<<<<<<< HEAD
   bool _canUpdateNote = true;
   String? _scoreErrorText;
+=======
+>>>>>>> b52bb8db1d12d85d0c194e033a2509de5618e81d
 
   @override
   void initState() {
@@ -64,6 +67,7 @@ class _EditNotePageState extends State<EditNotePage> {
               controller: _scoreController,
               decoration: InputDecoration(
                 labelText: '点数',
+<<<<<<< HEAD
                 errorText: _scoreErrorText,
               ),
               keyboardType: TextInputType.number,
@@ -89,6 +93,14 @@ class _EditNotePageState extends State<EditNotePage> {
             ElevatedButton(
               onPressed: _canUpdateNote
                   ? () async {
+=======
+              ),
+              keyboardType: TextInputType.number,
+            ),
+            SizedBox(height: 32.0),
+            ElevatedButton(
+              onPressed: () async {
+>>>>>>> b52bb8db1d12d85d0c194e033a2509de5618e81d
                 final songTitle = _songTitleController.text;
                 final artistName = _artistNameController.text;
                 final score = double.tryParse(_scoreController.text);
@@ -96,6 +108,7 @@ class _EditNotePageState extends State<EditNotePage> {
                 if (songTitle.isNotEmpty &&
                     artistName.isNotEmpty &&
                     score != null) {
+<<<<<<< HEAD
                   await DatabaseHelper.updateNote(
                     widget.note['id'],
                     songTitle,
@@ -106,6 +119,12 @@ class _EditNotePageState extends State<EditNotePage> {
                 }
               }
                   : null,
+=======
+                  await DatabaseHelper.updateNote(widget.note['id'], songTitle, artistName, score);
+                  Navigator.pop(context, true);
+                }
+              },
+>>>>>>> b52bb8db1d12d85d0c194e033a2509de5618e81d
               child: Text('更新'),
             ),
           ],
