@@ -148,8 +148,21 @@ class _HomePageState extends State<HomePage> {
           ),
           child: ListTile(
             title: Text(note['songTitle']),
-            subtitle: Text(note['artistName']),
+            subtitle: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(note['artistName']),
+                SizedBox(height: 4.0),
+                Text(
+                  '日付: ${note['date']}',
+                  style: TextStyle(fontSize: 12.0),
+                ),
+              ],
+            ),
             trailing: Text(note['score'].toStringAsFixed(3)),
+            onTap: () {
+              // リストアイテムがタップされた時の処理を追加する
+            },
           ),
         );
       },

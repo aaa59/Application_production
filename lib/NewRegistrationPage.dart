@@ -1,11 +1,25 @@
 import 'HomePage.dart';
 import 'package:flutter/material.dart';
-import 'package:applicationproduction/DatabaseHelper.dart';
+import 'DatabaseHelper.dart';
 
-class NewRegistrationPage extends StatelessWidget {
+class NewRegistrationPage extends StatefulWidget {
+  @override
+  _NewRegistrationPageState createState() => _NewRegistrationPageState();
+}
+
+class _NewRegistrationPageState extends State<NewRegistrationPage> {
   final TextEditingController _songTitleController = TextEditingController();
   final TextEditingController _artistNameController = TextEditingController();
   final TextEditingController _scoreController = TextEditingController();
+  DateTime _selectedDate = DateTime.now();
+
+  @override
+  void dispose() {
+    _songTitleController.dispose();
+    _artistNameController.dispose();
+    _scoreController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +54,18 @@ class NewRegistrationPage extends StatelessWidget {
               ),
               keyboardType: TextInputType.number,
             ),
+            SizedBox(height: 16.0),
+            Text(
+              '日付: ${_selectedDate.year}/${_selectedDate.month}/${_selectedDate.day}',
+              style: TextStyle(fontSize: 16.0),
+            ),
+            SizedBox(height: 8.0),
+            ElevatedButton(
+              onPressed: () {
+                _selectDate(context);
+              },
+              child: Text('日付を選択'),
+            ),
             SizedBox(height: 32.0),
             Row(
               children: [
@@ -68,7 +94,14 @@ class NewRegistrationPage extends StatelessWidget {
                       if (songTitle.isNotEmpty &&
                           artistName.isNotEmpty &&
                           score != null) {
-                        DatabaseHelper.insertNote(songTitle, artistName, score);
+                        final date = _selectedDate.toString();
+
+                        DatabaseHelper.insertNote(
+                          songTitle,
+                          artistName,
+                          score,
+                          date,
+                        );
 
                         Navigator.pop(context, true);
                       }
@@ -82,5 +115,20 @@ class NewRegistrationPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: _selectedDate,
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2100),
+    );
+
+    if (picked != null && picked != _selectedDate) {
+      setState(() {
+        _selectedDate = picked;
+      });
+    }
   }
 }

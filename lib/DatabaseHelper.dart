@@ -5,20 +5,25 @@ class DatabaseHelper {
   static Future<Database> _openDatabase() async {
     final databasePath = await getDatabasesPath();
     final path = join(databasePath, 'note_database.db');
-    return openDatabase(path, version: 1, onCreate: (db, version) async {
+    return openDatabase(path, version: 2, onCreate: (db, version) async {
       await db.execute('''
         CREATE TABLE note(
           id INTEGER PRIMARY KEY AUTOINCREMENT,
           songTitle TEXT,
           artistName TEXT,
-          score REAL
+          score REAL,
+          date TEXT
         )
       ''');
+    }, onUpgrade: (db, oldVersion, newVersion) async {
+      if (oldVersion == 1 && newVersion == 2) {
+        await db.execute('ALTER TABLE note ADD COLUMN date TEXT');
+      }
     });
   }
 
   static Future<void> insertNote(
-      String songTitle, String artistName, double score) async {
+      String songTitle, String artistName, double score, String date) async {
     final database = await _openDatabase();
     await database.insert(
       'note',
@@ -26,6 +31,7 @@ class DatabaseHelper {
         'songTitle': songTitle,
         'artistName': artistName,
         'score': score,
+        'date': date,
       },
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
