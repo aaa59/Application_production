@@ -15,17 +15,29 @@ class _EditNotePageState extends State<EditNotePage> {
   final TextEditingController _songTitleController = TextEditingController();
   final TextEditingController _artistNameController = TextEditingController();
   final TextEditingController _scoreController = TextEditingController();
+<<<<<<< HEAD
   bool _canUpdateNote = true;
   String? _scoreErrorText;
+=======
+<<<<<<< HEAD
+  bool _canUpdateNote = true;
+  String? _scoreErrorText;
+=======
+>>>>>>> b52bb8db1d12d85d0c194e033a2509de5618e81d
+>>>>>>> aad984c25dadeca525eec2866e5b1fe665eec1b7
 
   @override
   void initState() {
     super.initState();
     _songTitleController.text = widget.note['songTitle'];
     _artistNameController.text = widget.note['artistName'];
+<<<<<<< HEAD
 
     // 点数の表示を調整
     _scoreController.text = widget.note['score'].toStringAsFixed(3);
+=======
+    _scoreController.text = widget.note['score'].toString();
+>>>>>>> aad984c25dadeca525eec2866e5b1fe665eec1b7
   }
 
   @override
@@ -66,6 +78,10 @@ class _EditNotePageState extends State<EditNotePage> {
               controller: _scoreController,
               decoration: InputDecoration(
                 labelText: '点数',
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> aad984c25dadeca525eec2866e5b1fe665eec1b7
                 errorText: _scoreErrorText,
               ),
               keyboardType: TextInputType.number,
@@ -91,6 +107,17 @@ class _EditNotePageState extends State<EditNotePage> {
             ElevatedButton(
               onPressed: _canUpdateNote
                   ? () async {
+<<<<<<< HEAD
+=======
+=======
+              ),
+              keyboardType: TextInputType.number,
+            ),
+            SizedBox(height: 32.0),
+            ElevatedButton(
+              onPressed: () async {
+>>>>>>> b52bb8db1d12d85d0c194e033a2509de5618e81d
+>>>>>>> aad984c25dadeca525eec2866e5b1fe665eec1b7
                 final songTitle = _songTitleController.text;
                 final artistName = _artistNameController.text;
                 final score = double.tryParse(_scoreController.text);
@@ -98,6 +125,10 @@ class _EditNotePageState extends State<EditNotePage> {
                 if (songTitle.isNotEmpty &&
                     artistName.isNotEmpty &&
                     score != null) {
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> aad984c25dadeca525eec2866e5b1fe665eec1b7
                   await DatabaseHelper.updateNote(
                     widget.note['id'],
                     songTitle,
@@ -108,6 +139,15 @@ class _EditNotePageState extends State<EditNotePage> {
                 }
               }
                   : null,
+<<<<<<< HEAD
+=======
+=======
+                  await DatabaseHelper.updateNote(widget.note['id'], songTitle, artistName, score);
+                  Navigator.pop(context, true);
+                }
+              },
+>>>>>>> b52bb8db1d12d85d0c194e033a2509de5618e81d
+>>>>>>> aad984c25dadeca525eec2866e5b1fe665eec1b7
               child: Text('更新'),
             ),
           ],

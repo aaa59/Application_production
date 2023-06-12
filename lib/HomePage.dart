@@ -155,12 +155,31 @@ class _HomePageState extends State<HomePage> {
                 Text(note['artistName']),
                 SizedBox(height: 4.0),
                 Text(
+<<<<<<< HEAD
                   '日付: ${DateTime.parse(note['date']).year}/${DateTime.parse(note['date']).month}/${DateTime.parse(note['date']).day}',
+=======
+<<<<<<< HEAD
+                  '日付: ${DateTime.parse(note['date']).year}/${DateTime.parse(note['date']).month}/${DateTime.parse(note['date']).day}',
+=======
+<<<<<<< HEAD
+                  '日付: ${DateTime.parse(note['date']).year}/${DateTime.parse(note['date']).month}/${DateTime.parse(note['date']).day}',
+=======
+                  '日付: ${note['date']}',
+>>>>>>> 4891047ebfcb3681d0448a16ac1d893e507e1ec9
+>>>>>>> b52bb8db1d12d85d0c194e033a2509de5618e81d
+>>>>>>> aad984c25dadeca525eec2866e5b1fe665eec1b7
                   style: TextStyle(fontSize: 12.0),
                 ),
               ],
             ),
             trailing: Text(note['score'].toStringAsFixed(3)),
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> b52bb8db1d12d85d0c194e033a2509de5618e81d
+>>>>>>> aad984c25dadeca525eec2866e5b1fe665eec1b7
             onTap: () async {
               final result = await Navigator.push(
                 context,
@@ -170,6 +189,16 @@ class _HomePageState extends State<HomePage> {
               if (result != null && result) {
                 _loadNotes();
               }
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+=======
+            onTap: () {
+              // リストアイテムがタップされた時の処理を追加する
+>>>>>>> 4891047ebfcb3681d0448a16ac1d893e507e1ec9
+>>>>>>> b52bb8db1d12d85d0c194e033a2509de5618e81d
+>>>>>>> aad984c25dadeca525eec2866e5b1fe665eec1b7
             },
           ),
         );

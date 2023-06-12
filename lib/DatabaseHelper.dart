@@ -11,7 +11,15 @@ class DatabaseHelper {
           id INTEGER PRIMARY KEY AUTOINCREMENT,
           songTitle TEXT,
           artistName TEXT,
+<<<<<<< HEAD
           score NUMERIC(6, 3),
+=======
+<<<<<<< HEAD
+          score NUMERIC(6, 3),
+=======
+          score REAL,
+>>>>>>> b52bb8db1d12d85d0c194e033a2509de5618e81d
+>>>>>>> aad984c25dadeca525eec2866e5b1fe665eec1b7
           date TEXT
         )
       ''');

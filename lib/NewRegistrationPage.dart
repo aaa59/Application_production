@@ -11,8 +11,25 @@ class _NewRegistrationPageState extends State<NewRegistrationPage> {
   final TextEditingController _songTitleController = TextEditingController();
   final TextEditingController _artistNameController = TextEditingController();
   final TextEditingController _scoreController = TextEditingController();
+<<<<<<< HEAD
   bool _canAddNote = false;
   String? _scoreErrorText;
+=======
+<<<<<<< HEAD
+  bool _canAddNote = false;
+  String? _scoreErrorText;
+=======
+  DateTime _selectedDate = DateTime.now();
+
+  @override
+  void dispose() {
+    _songTitleController.dispose();
+    _artistNameController.dispose();
+    _scoreController.dispose();
+    super.dispose();
+  }
+>>>>>>> b52bb8db1d12d85d0c194e033a2509de5618e81d
+>>>>>>> aad984c25dadeca525eec2866e5b1fe665eec1b7
 
   @override
   void dispose() {
@@ -75,13 +92,29 @@ class _NewRegistrationPageState extends State<NewRegistrationPage> {
             ),
             SizedBox(height: 32.0),
             ElevatedButton(
+<<<<<<< HEAD
               onPressed: _canAddNote
                   ? () async {
+=======
+<<<<<<< HEAD
+              onPressed: _canAddNote
+                  ? () async {
+=======
+              onPressed: () async {
+>>>>>>> b52bb8db1d12d85d0c194e033a2509de5618e81d
+>>>>>>> aad984c25dadeca525eec2866e5b1fe665eec1b7
                 final songTitle = _songTitleController.text;
                 final artistName = _artistNameController.text;
                 final score = double.tryParse(_scoreController.text);
                 final date = DateTime.now().toString();
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> b52bb8db1d12d85d0c194e033a2509de5618e81d
+>>>>>>> aad984c25dadeca525eec2866e5b1fe665eec1b7
                 if (songTitle.isNotEmpty &&
                     artistName.isNotEmpty &&
                     score != null) {
@@ -93,9 +126,40 @@ class _NewRegistrationPageState extends State<NewRegistrationPage> {
                   );
                   Navigator.pop(context, true);
                 }
+<<<<<<< HEAD
               }
                   : null,
               child: Text('登録'),
+=======
+<<<<<<< HEAD
+              }
+                  : null,
+              child: Text('登録'),
+=======
+              },
+              child: Text('登録'),
+=======
+                      if (songTitle.isNotEmpty &&
+                          artistName.isNotEmpty &&
+                          score != null) {
+                        final date = DateTime.now().toString();
+
+                        DatabaseHelper.insertNote(
+                          songTitle,
+                          artistName,
+                          score,
+                          date,
+                        );
+                        Navigator.pop(context, true);
+                      }
+                    },
+                    child: Text('登録'),
+                  ),
+                ),
+              ],
+>>>>>>> 4891047ebfcb3681d0448a16ac1d893e507e1ec9
+>>>>>>> b52bb8db1d12d85d0c194e033a2509de5618e81d
+>>>>>>> aad984c25dadeca525eec2866e5b1fe665eec1b7
             ),
           ],
         ),
