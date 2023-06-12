@@ -54,18 +54,6 @@ class _NewRegistrationPageState extends State<NewRegistrationPage> {
               ),
               keyboardType: TextInputType.number,
             ),
-            SizedBox(height: 16.0),
-            Text(
-              '日付: ${_selectedDate.year}/${_selectedDate.month}/${_selectedDate.day}',
-              style: TextStyle(fontSize: 16.0),
-            ),
-            SizedBox(height: 8.0),
-            ElevatedButton(
-              onPressed: () {
-                _selectDate(context);
-              },
-              child: Text('日付を選択'),
-            ),
             SizedBox(height: 32.0),
             Row(
               children: [
@@ -94,7 +82,7 @@ class _NewRegistrationPageState extends State<NewRegistrationPage> {
                       if (songTitle.isNotEmpty &&
                           artistName.isNotEmpty &&
                           score != null) {
-                        final date = _selectedDate.toString();
+                        final date = DateTime.now().toString();
 
                         DatabaseHelper.insertNote(
                           songTitle,
@@ -102,7 +90,6 @@ class _NewRegistrationPageState extends State<NewRegistrationPage> {
                           score,
                           date,
                         );
-
                         Navigator.pop(context, true);
                       }
                     },
@@ -115,20 +102,5 @@ class _NewRegistrationPageState extends State<NewRegistrationPage> {
         ),
       ),
     );
-  }
-
-  Future<void> _selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: _selectedDate,
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2100),
-    );
-
-    if (picked != null && picked != _selectedDate) {
-      setState(() {
-        _selectedDate = picked;
-      });
-    }
   }
 }
