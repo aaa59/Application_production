@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'DatabaseHelper.dart';
 import 'NewRegistrationPage.dart';
+import 'EditNotePage.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -25,6 +26,38 @@ class _HomePageState extends State<HomePage> {
       _notes = List.from(notes.reversed);
     });
   }
+
+  Future<bool?> _confirmDelete(BuildContext context, Map<String, dynamic> note) async {
+    return showDialog<bool?>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('削除の確認'),
+          content: Text('本当に削除しますか？'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(false); // キャンセルボタンが押された場合はfalseを返す
+              },
+              child: Text('キャンセル'),
+            ),
+            TextButton(
+              onPressed: () async {
+                await DatabaseHelper.deleteNote(note['id']);
+                setState(() {
+                  _notes.remove(note); // ノートをリストから削除する
+                  _searchResults.remove(note); // 検索結果からも削除する
+                });
+                Navigator.of(context).pop(true); // 削除ボタンが押された場合はtrueを返す
+              },
+              child: Text('削除'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
 
   Future<void> _searchNotes(String searchText) async {
     final notes = await DatabaseHelper.getNotes();
@@ -81,12 +114,6 @@ class _HomePageState extends State<HomePage> {
             ],
           ),
           SizedBox(height: 20.0),
-          Text(
-            '一覧',
-            style: TextStyle(fontSize: 18.0),
-            textAlign: TextAlign.center,
-          ),
-          SizedBox(height: 20.0),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -124,18 +151,26 @@ class _HomePageState extends State<HomePage> {
       );
     }
 
-    return ListView.builder(
+    return ListView.separated(
       itemCount: resultList.length,
+      separatorBuilder: (context, index) => Divider(
+        color: Colors.grey,
+      ),
       itemBuilder: (context, index) {
         final note = resultList[index];
+
+        final double score = double.parse(note['score'].toString());
+        Color scoreColor = Colors.black;
+        if (score >= 90.0) {
+          scoreColor = Colors.red;
+        }
+
         return Dismissible(
           key: Key(note['id'].toString()),
           direction: DismissDirection.endToStart,
-          onDismissed: (direction) async {
-            await DatabaseHelper.deleteNote(note['id']);
-            setState(() {
-              resultList.removeAt(index);
-            });
+          confirmDismiss: (direction) async {
+            final result = await _confirmDelete(context, note);
+            return result ?? false;
           },
           background: Container(
             color: Colors.red,
@@ -146,10 +181,60 @@ class _HomePageState extends State<HomePage> {
               color: Colors.white,
             ),
           ),
+          onDismissed: (direction) async {
+            await DatabaseHelper.deleteNote(note['id']);
+            setState(() {
+              resultList.remove(note); // ノートをリストから削除する
+            });
+          },
           child: ListTile(
-            title: Text(note['songTitle']),
-            subtitle: Text(note['artistName']),
-            trailing: Text(note['score'].toStringAsFixed(3)),
+            title: Text(
+              note['songTitle'],
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 16.0,
+                color: Colors.black, // 曲名の文字色を黒に設定
+              ),
+            ),
+            subtitle: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  note['artistName'],
+                  style: TextStyle(
+                    fontSize: 14.0,
+                    fontStyle: FontStyle.italic,
+                    color: Colors.blue, // アーティスト名の文字色を青に設定
+                  ),
+                ),
+                SizedBox(height: 4.0),
+                Text(
+                  '日付: ${DateTime.parse(note['date']).year}/${DateTime.parse(note['date']).month}/${DateTime.parse(note['date']).day}',
+                  style: TextStyle(
+                    fontSize: 12.0,
+                    color: Colors.grey,
+                  ),
+                ),
+              ],
+            ),
+            trailing: Text(
+              score.toStringAsFixed(3),
+              style: TextStyle(
+                fontSize: 16.0,
+                fontWeight: FontWeight.bold,
+                color: scoreColor, // 点数の文字色を設定
+              ),
+            ),
+            onTap: () async {
+              final result = await Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => EditNotePage(note: note)),
+              );
+
+              if (result != null && result) {
+                _loadNotes();
+              }
+            },
           ),
         );
       },
