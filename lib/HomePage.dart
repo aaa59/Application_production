@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'DatabaseHelper.dart';
 import 'NewRegistrationPage.dart';
+import 'EditNotePage.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -124,10 +125,20 @@ class _HomePageState extends State<HomePage> {
       );
     }
 
-    return ListView.builder(
+    return ListView.separated(
       itemCount: resultList.length,
+      separatorBuilder: (context, index) => Divider(
+        color: Colors.grey,
+      ),
       itemBuilder: (context, index) {
         final note = resultList[index];
+
+        final double score = double.parse(note['score'].toString());
+        Color scoreColor = Colors.black;
+        if (score >= 90.0) {
+          scoreColor = Colors.red;
+        }
+
         return Dismissible(
           key: Key(note['id'].toString()),
           direction: DismissDirection.endToStart,
@@ -147,9 +158,53 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
           child: ListTile(
-            title: Text(note['songTitle']),
-            subtitle: Text(note['artistName']),
-            trailing: Text(note['score'].toStringAsFixed(3)),
+            title: Text(
+              note['songTitle'],
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 16.0,
+                color: Colors.black, // 曲名の文字色を黒に設定
+              ),
+            ),
+            subtitle: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  note['artistName'],
+                  style: TextStyle(
+                    fontSize: 14.0,
+                    fontStyle: FontStyle.italic,
+                    color: Colors.blue, // アーティスト名の文字色を青に設定
+                  ),
+                ),
+                SizedBox(height: 4.0),
+                Text(
+                  '日付: ${DateTime.parse(note['date']).year}/${DateTime.parse(note['date']).month}/${DateTime.parse(note['date']).day}',
+                  style: TextStyle(
+                    fontSize: 12.0,
+                    color: Colors.grey,
+                  ),
+                ),
+              ],
+            ),
+            trailing: Text(
+              score.toStringAsFixed(3),
+              style: TextStyle(
+                fontSize: 16.0,
+                fontWeight: FontWeight.bold,
+                color: scoreColor, // 点数の文字色を設定
+              ),
+            ),
+            onTap: () async {
+              final result = await Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => EditNotePage(note: note)),
+              );
+
+              if (result != null && result) {
+                _loadNotes();
+              }
+            },
           ),
         );
       },
