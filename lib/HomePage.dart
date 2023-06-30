@@ -24,6 +24,7 @@ class _HomePageState extends State<HomePage> {
     final notes = await DatabaseHelper.getNotes();
     setState(() {
       _notes = List.from(notes.reversed);
+      _searchResults = List.from(_notes); // 検索結果も新しい順に並べる
     });
   }
 
@@ -58,7 +59,6 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-
   Future<void> _searchNotes(String searchText) async {
     final notes = await DatabaseHelper.getNotes();
     final List<Map<String, dynamic>> results = [];
@@ -74,7 +74,7 @@ class _HomePageState extends State<HomePage> {
     }
 
     setState(() {
-      _searchResults = results;
+      _searchResults = List.from(results.reversed); // 検索結果も新しい順に並べる
     });
   }
 
